@@ -2,7 +2,7 @@
 <html lang="da">
 <head>
 <meta charset="UTF-8">
-<title>Nedtælling til 14:30</title>
+<title>Nedtælling til pause</title>
 <style>
     body {
         font-family: Arial, sans-serif;
@@ -15,6 +15,10 @@
         flex-direction: column;
     }
 
+    #title {
+        font-size: 30px;
+    }
+
     #countdown {
         font-size: 60px;
         font-weight: bold;
@@ -24,28 +28,43 @@
 </head>
 <body>
 
-<h1>Nedtælling til 14:30</h1>
+<h1 id="title">Næste pause</h1>
 <div id="countdown">Loader...</div>
 
 <script>
 function updateCountdown() {
     const now = new Date();
-    const target = new Date();
 
-    target.setHours(14);
-    target.setMinutes(30);
-    target.setSeconds(0);
+    const pause1 = new Date();
+    pause1.setHours(9,45,0,0);
 
-    // Hvis klokken er over 14:30 i dag, sæt til i morgen
-    if (now > target) {
-        target.setDate(target.getDate() + 1);
+    const pause2 = new Date();
+    pause2.setHours(11,35,0,0);
+
+    let target;
+    let title;
+
+    if (now < pause1) {
+        target = pause1;
+        title = "Nedtælling til 10-pausen";
+    } 
+    else if (now < pause2) {
+        target = pause2;
+        title = "Nedtælling til 12-pausen";
+    } 
+    else {
+        document.getElementById("title").textContent = "Alle pauser er slut i dag";
+        document.getElementById("countdown").textContent = "🎉";
+        return;
     }
+
+    document.getElementById("title").textContent = title;
 
     const diff = target - now;
 
-    const hours = Math.floor(diff / (1000 * 60 * 60));
-    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-    const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+    const hours = Math.floor(diff / (1000*60*60));
+    const minutes = Math.floor((diff % (1000*60*60)) / (1000*60));
+    const seconds = Math.floor((diff % (1000*60)) / 1000);
 
     document.getElementById("countdown").textContent =
         `${hours}t ${minutes}m ${seconds}s`;
