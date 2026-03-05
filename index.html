@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Skole timer</title>
+
 <style>
 body{
     font-family: Arial, sans-serif;
@@ -25,7 +26,6 @@ body{
     margin-top:20px;
 }
 
-/* tekst i hjørnet */
 #credit{
     position:fixed;
     bottom:10px;
@@ -35,6 +35,7 @@ body{
 }
 </style>
 </head>
+
 <body>
 
 <h1 id="title">Loader...</h1>
@@ -43,46 +44,91 @@ body{
 <div id="credit">lavet af Jeppe Rask Jensen</div>
 
 <script>
+
 function updateCountdown(){
 
 const now = new Date();
+const day = now.getDay(); 
+// 0=søndag 1=mandag 2=tirsdag 3=onsdag 4=torsdag 5=fredag
 
-const pause10start = new Date();
-pause10start.setHours(9,45,0,0);
+function makeTime(h,m){
+let d = new Date();
+d.setHours(h,m,0,0);
+return d;
+}
 
-const pause10end = new Date();
-pause10end.setHours(10,5,0,0);
+const p10start = makeTime(9,45);
+const p10end = makeTime(10,5);
 
-const pause12start = new Date();
-pause12start.setHours(11,35,0,0);
+const p12start = makeTime(11,35);
+const p12end = makeTime(12,5);
 
-const pause12end = new Date();
-pause12end.setHours(12,5,0,0);
+const p13start = makeTime(13,35);
+const p13end = makeTime(13,45);
+
+const fri1335 = makeTime(13,35);
+const fri1430 = makeTime(14,30);
 
 let target;
 let text;
 
-if(now < pause10start){
-    target = pause10start;
-    text = "Til 10-pause";
+/* 10 pause */
+if(now < p10start){
+target = p10start;
+text = "Til 10-pause";
 }
-else if(now < pause10end){
-    target = pause10end;
-    text = "Pause slutter";
+else if(now < p10end){
+target = p10end;
+text = "Pause slutter";
 }
-else if(now < pause12start){
-    target = pause12start;
-    text = "Til 12-pause";
+
+/* 12 pause */
+else if(now < p12start){
+target = p12start;
+text = "Til 12-pause";
 }
-else if(now < pause12end){
-    target = pause12end;
-    text = "Pause slutter";
+else if(now < p12end){
+target = p12end;
+text = "Pause slutter";
+}
+
+/* Mandag eller fredag */
+else if(day == 1 || day == 5){
+
+if(now < fri1335){
+target = fri1335;
+text = "Til fri";
+}else{
+finish();
+return;
+}
+
+}
+
+/* Tirsdag onsdag torsdag */
+else if(day == 2 || day == 3 || day == 4){
+
+if(now < p13start){
+target = p13start;
+text = "Til 10 min pause";
+}
+else if(now < p13end){
+target = p13end;
+text = "Pause slutter";
+}
+else if(now < fri1430){
+target = fri1430;
+text = "Til fri";
 }
 else{
-    document.getElementById("title").textContent = "Skole dagen er slut 🎉";
-    document.getElementById("countdown").textContent = "";
-    document.title = "Færdig 🎉";
-    return;
+finish();
+return;
+}
+
+}
+else{
+finish();
+return;
 }
 
 document.getElementById("title").textContent = text;
@@ -95,20 +141,26 @@ const seconds = Math.floor((diff%(1000*60))/1000);
 
 let display = "";
 
-if(hours > 0){
-display += hours + "t ";
+if(hours>0){
+display += hours+"t ";
 }
 
-display += minutes + "m " + seconds + "s";
+display += minutes+"m "+seconds+"s";
 
 document.getElementById("countdown").textContent = display;
+document.title = display+" - "+text;
 
-document.title = display + " - " + text;
+}
 
+function finish(){
+document.getElementById("title").textContent="Skole dagen er slut 🎉";
+document.getElementById("countdown").textContent="";
+document.title="Fri 🎉";
 }
 
 setInterval(updateCountdown,1000);
 updateCountdown();
+
 </script>
 
 </body>
