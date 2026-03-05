@@ -24,12 +24,23 @@ body{
     font-weight:bold;
     margin-top:20px;
 }
+
+/* tekst i hjørnet */
+#credit{
+    position:fixed;
+    bottom:10px;
+    right:15px;
+    font-size:12px;
+    color:#aaa;
+}
 </style>
 </head>
 <body>
 
 <h1 id="title">Loader...</h1>
 <div id="countdown">...</div>
+
+<div id="credit">lavet af Jeppe Rask Jensen</div>
 
 <script>
 function updateCountdown(){
@@ -92,7 +103,6 @@ display += minutes + "m " + seconds + "s";
 
 document.getElementById("countdown").textContent = display;
 
-/* OPDATER FANENS TITEL */
 document.title = display + " - " + text;
 
 }
