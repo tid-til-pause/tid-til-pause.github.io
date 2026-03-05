@@ -3,181 +3,132 @@
 <head>
 <meta charset="UTF-8">
 <title>Skole timer</title>
-
 <style>
-
 html, body{
-height:100%;
-margin:0;
-overflow:hidden;
+  height:100%;
+  margin:0;
+  overflow:hidden; /* stopper scrolling */
 }
-
 body{
-font-family: Arial, sans-serif;
-background:#111;
-color:white;
-display:flex;
-justify-content:center;
-align-items:center;
-flex-direction:column;
+  font-family: Arial, sans-serif;
+  background:#111;
+  color:white;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  flex-direction:column;
 }
-
 #title{
-font-size:32px;
+  font-size:32px;
 }
-
 #countdown{
-font-size:70px;
-font-weight:bold;
-margin-top:20px;
+  font-size:70px;
+  font-weight:bold;
+  margin-top:20px;
 }
-
 #credit{
-position:fixed;
-bottom:10px;
-right:15px;
-font-size:12px;
-color:#aaa;
+  position:fixed;
+  bottom:10px;
+  right:15px;
+  font-size:12px;
+  color:#aaa;
 }
-
 </style>
 </head>
-
 <body>
 
 <h1 id="title">Loader...</h1>
 <div id="countdown">...</div>
-
 <div id="credit">lavet af Jeppe Rask Jensen</div>
 
 <script>
-
 function updateCountdown(){
+  const now = new Date();
+  const day = now.getDay();
 
-const now = new Date();
-const day = now.getDay();
+  function makeTime(h,m){
+    let d = new Date();
+    d.setHours(h,m,0,0);
+    return d;
+  }
 
-function makeTime(h,m){
-let d = new Date();
-d.setHours(h,m,0,0);
-return d;
-}
+  const p10start = makeTime(9,45);
+  const p10end = makeTime(10,5);
+  const p12start = makeTime(11,35);
+  const p12end = makeTime(12,5);
+  const p13start = makeTime(13,35);
+  const p13end = makeTime(13,45);
+  const fri1335 = makeTime(13,35);
+  const fri1430 = makeTime(14,30);
 
-const p10start = makeTime(9,45);
-const p10end = makeTime(10,5);
+  let target;
+  let text;
 
-const p12start = makeTime(11,35);
-const p12end = makeTime(12,5);
+  if(now < p10start){
+    target = p10start;
+    text = "Til 10-pause";
+  }
+  else if(now < p10end){
+    target = p10end;
+    text = "Pause slutter";
+  }
+  else if(now < p12start){
+    target = p12start;
+    text = "Til 12-pause";
+  }
+  else if(now < p12end){
+    target = p12end;
+    text = "Pause slutter";
+  }
+  else if(day == 1 || day == 5){
+    if(now < fri1335){
+      target = fri1335;
+      text = "Til fri";
+    }else{ finish(); return; }
+  }
+  else if(day == 2 || day == 3 || day == 4){
+    if(now < p13start){
+      target = p13start;
+      text = "Til 10 min pause";
+    }
+    else if(now < p13end){
+      target = p13end;
+      text = "Pause slutter";
+    }
+    else if(now < fri1430){
+      target = fri1430;
+      text = "Til fri";
+    }
+    else{ finish(); return; }
+  }
+  else{ finish(); return; }
 
-const p13start = makeTime(13,35);
-const p13end = makeTime(13,45);
+  document.getElementById("title").textContent = text;
 
-const fri1335 = makeTime(13,35);
-const fri1430 = makeTime(14,30);
+  const diff = target - now;
 
-let target;
-let text;
+  const hours = Math.floor(diff/(1000*60*60));
+  const minutes = Math.floor((diff%(1000*60*60))/(1000*60));
+  const seconds = Math.floor((diff%(1000*60))/1000);
 
-/* 10 pause */
+  let display = "";
 
-if(now < p10start){
-target = p10start;
-text = "Til 10-pause";
-}
+  if(hours > 0) display += hours + "t ";
+  if(minutes > 0) display += minutes + "m ";
+  display += seconds + "s";
 
-else if(now < p10end){
-target = p10end;
-text = "Pause slutter";
-}
-
-/* 12 pause */
-
-else if(now < p12start){
-target = p12start;
-text = "Til 12-pause";
-}
-
-else if(now < p12end){
-target = p12end;
-text = "Pause slutter";
-}
-
-/* Mandag og fredag */
-
-else if(day == 1 || day == 5){
-
-if(now < fri1335){
-target = fri1335;
-text = "Til fri";
-}
-else{
-finish();
-return;
-}
-
-}
-
-/* Tirsdag onsdag torsdag */
-
-else if(day == 2 || day == 3 || day == 4){
-
-if(now < p13start){
-target = p13start;
-text = "Til 10 min pause";
-}
-
-else if(now < p13end){
-target = p13end;
-text = "Pause slutter";
-}
-
-else if(now < fri1430){
-target = fri1430;
-text = "Til fri";
-}
-
-else{
-finish();
-return;
-}
-
-}
-
-else{
-finish();
-return;
-}
-
-document.getElementById("title").textContent = text;
-
-const diff = target - now;
-
-const hours = Math.floor(diff/(1000*60*60));
-const minutes = Math.floor((diff%(1000*60*60))/(1000*60));
-const seconds = Math.floor((diff%(1000*60))/1000);
-
-let display = "";
-
-if(hours > 0){
-display += hours + "t ";
-}
-
-display += minutes + "m " + seconds + "s";
-
-document.getElementById("countdown").textContent = display;
-document.title = display + " - " + text;
-
+  document.getElementById("countdown").textContent = display;
+  document.title = display + " - " + text;
 }
 
 function finish(){
-document.getElementById("title").textContent = "Skole dagen er slut 🎉";
-document.getElementById("countdown").textContent = "";
-document.title = "Fri 🎉";
+  document.getElementById("title").textContent="Skole dagen er slut 🎉";
+  document.getElementById("countdown").textContent="";
+  document.title="Fri 🎉";
 }
 
 setInterval(updateCountdown,1000);
 updateCountdown();
-
 </script>
 
 </body>
