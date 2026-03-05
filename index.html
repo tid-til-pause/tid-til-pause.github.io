@@ -53,23 +53,24 @@ let text;
 
 if(now < pause10start){
     target = pause10start;
-    text = "Nedtælling til 10-pausen";
+    text = "Til 10-pause";
 }
 else if(now < pause10end){
     target = pause10end;
-    text = "Pause – timen starter igen om";
+    text = "Pause slutter";
 }
 else if(now < pause12start){
     target = pause12start;
-    text = "Nedtælling til 12-pausen";
+    text = "Til 12-pause";
 }
 else if(now < pause12end){
     target = pause12end;
-    text = "Pause – timen starter igen om";
+    text = "Pause slutter";
 }
 else{
     document.getElementById("title").textContent = "Skole dagen er slut 🎉";
     document.getElementById("countdown").textContent = "";
+    document.title = "Færdig 🎉";
     return;
 }
 
@@ -84,12 +85,15 @@ const seconds = Math.floor((diff%(1000*60))/1000);
 let display = "";
 
 if(hours > 0){
-    display += hours + "t ";
+display += hours + "t ";
 }
 
 display += minutes + "m " + seconds + "s";
 
 document.getElementById("countdown").textContent = display;
+
+/* OPDATER FANENS TITEL */
+document.title = display + " - " + text;
 
 }
 
