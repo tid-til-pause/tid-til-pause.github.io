@@ -1,1 +1,59 @@
-VI HADER SKOLE!!!
+<!DOCTYPE html>
+<html lang="da">
+<head>
+<meta charset="UTF-8">
+<title>Nedtælling til 14:30</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background: #111;
+        color: #fff;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        flex-direction: column;
+    }
+
+    #countdown {
+        font-size: 60px;
+        font-weight: bold;
+        margin-top: 20px;
+    }
+</style>
+</head>
+<body>
+
+<h1>Nedtælling til 14:30</h1>
+<div id="countdown">Loader...</div>
+
+<script>
+function updateCountdown() {
+    const now = new Date();
+    const target = new Date();
+
+    target.setHours(14);
+    target.setMinutes(30);
+    target.setSeconds(0);
+
+    // Hvis klokken er over 14:30 i dag, sæt til i morgen
+    if (now > target) {
+        target.setDate(target.getDate() + 1);
+    }
+
+    const diff = target - now;
+
+    const hours = Math.floor(diff / (1000 * 60 * 60));
+    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+    document.getElementById("countdown").textContent =
+        `${hours}t ${minutes}m ${seconds}s`;
+}
+
+setInterval(updateCountdown, 1000);
+updateCountdown();
+</script>
+
+</body>
+</html>
