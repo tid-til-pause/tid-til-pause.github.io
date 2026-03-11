@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+<meta charset="UTF-8">
+<title>Uge Nummer</title>
+<style>
+html, body{
+  height:100%;
+  margin:0;
+  overflow:hidden;
+}
+body{
+  font-family: Arial, sans-serif;
+  background:#111;
+  color:white;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  flex-direction:column;
+}
+#title{
+  font-size:32px;
+}
+#countdown{
+  font-size:70px;
+  font-weight:bold;
+  margin-top:20px;
+}
+#credit{
+  position:fixed;
+  bottom:10px;
+  right:15px;
+  font-size:12px;
+  color:#aaa;
+}
+</style>
+</head>
+<body>
+
+<h1 id="title"></h1>
+<div id="countdown">...</div>
+<div id="credit">lavet af Jeppe Rask Jensen</div>
+
+<script>
+  function getWeekNumber(d) {
+    d = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
+    d.setUTCDate(d.getUTCDate() + 4 - (d.getUTCDay() || 7));
+    const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
+    return Math.ceil((((d - yearStart) / 86400000) + 1) / 7);
+  }
+
+  function update() {
+    const now = new Date();
+    const week = getWeekNumber(now);
+    document.getElementById("countdown").textContent = "Uge " + week;
+    document.title = "Uge " + week;
+  }
+
+  update();
+  setInterval(update, 60000);
+</script>
+
+</body>
+</html>
