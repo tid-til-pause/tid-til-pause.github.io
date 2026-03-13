@@ -33,27 +33,32 @@ body{
   font-size:12px;
   color:#aaa;
 }
-#ugelink{
+#toplinks{
   position:fixed;
   top:10px;
   right:15px;
+  display:flex;
+  gap:15px;
+}
+#toplinks a{
   font-size:12px;
   color:#aaa;
   font-family: Arial, sans-serif;
   text-decoration:none;
 }
-#ugelink:hover{
+#toplinks a:hover{
   color:white;
 }
 </style>
 </head>
 <body>
-
-<a id="ugelink" href="https://tid-til-pause.github.io/UgeNumber">Uge Nummer</a>
+<div id="toplinks">
+  <a href="https://tid-til-pause.github.io/berlin">Berlin Turen</a>
+  <a href="https://tid-til-pause.github.io/UgeNumber">Uge Nummer</a>
+</div>
 <h1 id="title">Loader...</h1>
 <div id="countdown">...</div>
 <div id="credit">lavet af Jeppe Rask Jensen</div>
-
 <script>
 function updateCountdown(){
   const now = new Date();
