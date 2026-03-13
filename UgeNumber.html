@@ -33,27 +33,32 @@ body{
   font-size:12px;
   color:#aaa;
 }
-#homelink{
+#toplinks{
   position:fixed;
   top:10px;
   right:15px;
+  display:flex;
+  gap:15px;
+}
+#toplinks a{
   font-size:12px;
   color:#aaa;
   font-family: Arial, sans-serif;
   text-decoration:none;
 }
-#homelink:hover{
+#toplinks a:hover{
   color:white;
 }
 </style>
 </head>
 <body>
-
-<a id="homelink" href="https://tid-til-pause.github.io/">Tid til næste pause</a>
+<div id="toplinks">
+  <a href="https://tid-til-pause.github.io/berlin">Berlin Turen</a>
+  <a href="https://tid-til-pause.github.io/">Tid til næste pause</a>
+</div>
 <h1 id="title"></h1>
 <div id="countdown">...</div>
 <div id="credit">lavet af Jeppe Rask Jensen</div>
-
 <script>
   function getWeekNumber(d) {
     d = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
@@ -61,17 +66,14 @@ body{
     const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
     return Math.ceil((((d - yearStart) / 86400000) + 1) / 7);
   }
-
   function update() {
     const now = new Date();
     const week = getWeekNumber(now);
     document.getElementById("countdown").textContent = "Uge " + week;
     document.title = "Uge " + week;
   }
-
   update();
   setInterval(update, 60000);
 </script>
-
 </body>
 </html>
