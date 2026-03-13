@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+<meta charset="UTF-8">
+<title>Berlin Turen</title>
+<style>
+html, body{
+  height:100%;
+  margin:0;
+  overflow:hidden;
+}
+body{
+  font-family: Arial, sans-serif;
+  background:#111;
+  color:white;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  flex-direction:column;
+}
+#title{
+  font-size:32px;
+  letter-spacing: 1px;
+}
+#countdown{
+  font-size:70px;
+  font-weight:bold;
+  margin-top:20px;
+}
+#week{
+  font-size:20px;
+  color:#aaa;
+  margin-top:10px;
+}
+#credit{
+  position:fixed;
+  bottom:10px;
+  right:15px;
+  font-size:12px;
+  color:#aaa;
+}
+#ugelink{
+  position:fixed;
+  top:10px;
+  right:15px;
+  font-size:12px;
+  color:#aaa;
+  font-family: Arial, sans-serif;
+  text-decoration:none;
+}
+#ugelink:hover{
+  color:white;
+}
+</style>
+</head>
+<body>
+<a id="ugelink" href="https://tid-til-pause.github.io/UgeNumber">Uge Nummer</a>
+<h1 id="title">✈️ Tid til Berlin Turen</h1>
+<div id="countdown">...</div>
+<div id="week">Uge 16 — 13. april 2026</div>
+<div id="credit">lavet af Jeppe Rask Jensen</div>
+<script>
+// Uge 16 starter mandag d. 13. april 2026
+const berlinDate = new Date(2026, 3, 13, 0, 0, 0, 0); // April = måned 3 (0-indekseret)
+
+function updateCountdown(){
+  const now = new Date();
+  const diff = berlinDate - now;
+
+  if(diff <= 0){
+    document.getElementById("title").textContent = "🎉 Berlin Turen er nu! 🎉";
+    document.getElementById("countdown").textContent = "";
+    document.getElementById("week").textContent = "";
+    document.title = "Berlin! 🎉";
+    return;
+  }
+
+  const days    = Math.floor(diff / (1000*60*60*24));
+  const hours   = Math.floor((diff % (1000*60*60*24)) / (1000*60*60));
+  const minutes = Math.floor((diff % (1000*60*60)) / (1000*60));
+  const seconds = Math.floor((diff % (1000*60)) / 1000);
+
+  let display = "";
+  if(days > 0)    display += days + "d ";
+  if(hours > 0)   display += hours + "t ";
+  if(minutes > 0) display += minutes + "m ";
+  display += seconds + "s";
+
+  document.getElementById("countdown").textContent = display;
+  document.title = display + " - Berlin Turen ✈️";
+}
+
+setInterval(updateCountdown, 1000);
+updateCountdown();
+</script>
+</body>
+</html>
